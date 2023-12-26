@@ -1,0 +1,32 @@
+# THIS IS FILEBEAT INSTALL IF NEDD TO INSTALL FILEBEAT PUT IT INTO DOCKER-COMPOSE WITH ALL CONTAINER LOGSTASH ELASTIC KIBANA FILEBEAT 
+# THIS ALL STURCTURE CAN TAKE THE LINUX SYSTEM IF YOU FILEBEAT RUNNING ON WINDOW THAN GIVE THE IP ADDRESS OF LOGSTASH AND PORT AND PING WITH EACH OTHER
+
+
+
+filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.0
+    volumes:
+      - /var/log/*log:/usr/share/filebeat/logs
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml
+    user: root
+    command: ["-e", "--strict.perms=false"]
+
+
+
+# IF THE TAKE THE LOGS FROM WINDOW THE FILEBEAT.YML IS GIVIEN BELOW
+
+input {
+  beats {
+    port => 5044
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["elasticsearch:9200"]
+    index => "logs_test"
+  }
+}
+
+
+
